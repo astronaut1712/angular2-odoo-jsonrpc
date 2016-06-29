@@ -17,7 +17,10 @@ Migrate from [https://github.com/akretion/angular-odoo/blob/master/src/component
 
 Import `OdooRPCService` into component
 
-`import { OdooRPCService } from './odoorpc.service'`
+```typescript
+import { Component } from '@angular/core';
+import { OdooRPCService } from './odoorpc.service';
+```
 
 Add provider in app component
 
@@ -28,7 +31,7 @@ Add provider in app component
 })
 ```
 
-Initialze configuration in constructor of component
+Initialize configuration in `constructor` of component
 
 ```typescript
 
@@ -45,6 +48,8 @@ export class OdooClientExampleComponent {
             console.error('login failed', err);
         })
     }
+
+    ...
 
 }
 
