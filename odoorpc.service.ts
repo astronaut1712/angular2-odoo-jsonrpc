@@ -116,20 +116,20 @@ export class OdooRPCService {
         return Promise.reject(error.message || error);
     }
 
-    init(configs: any) {
+    public init(configs: any) {
         this.odoo_server = configs.odoo_server;
         this.http_auth = configs.http_auth || null;
     }
 
-    setOdooServer(odoo_server: string) {
+    public setOdooServer(odoo_server: string) {
         this.odoo_server = odoo_server;
     }
 
-    setHttpAuth(http_auth: string) {
+    public setHttpAuth(http_auth: string) {
         this.http_auth = http_auth;
     }
 
-    sendRequest(url: string, params: Object): Promise<any> {
+    public sendRequest(url: string, params: Object): Promise<any> {
         let options = this.buildRequest(url, params);
         return this.http.post(this.odoo_server + url, options, {headers: this.headers})
             .toPromise()
@@ -137,15 +137,15 @@ export class OdooRPCService {
             .catch(this.handleHttpErrors);
     }
 
-    getServerInfo() {
+    public getServerInfo() {
         return this.sendRequest("/web/webclient/version_info", {});
     }
 
-    getSessionInfo() {
+    public getSessionInfo() {
         return this.sendRequest("/web/session/get_session_info", {});
     }
 
-    login(db: string, login: string, password: string) {
+    public login(db: string, login: string, password: string) {
         let params = {
                 db : db,
                 login : login,
@@ -167,7 +167,7 @@ export class OdooRPCService {
         });
     }
 
-    isLoggedIn(force: boolean = true) {
+    public isLoggedIn(force: boolean = true) {
         if (!force) {
             return Promise.resolve(this.cookies.get_sessionId().length > 0);
         }
@@ -177,7 +177,7 @@ export class OdooRPCService {
         });
     }
 
-    logout(force: boolean = true) {
+    public logout(force: boolean = true) {
         this.cookies.delete_sessionId();
         if (force) {
             return this.getSessionInfo().then((r: any) => { // get db from sessionInfo
@@ -189,11 +189,11 @@ export class OdooRPCService {
         }
     }
 
-    getDbList() { // only use for odoo < 9.0
+    public getDbList() { // only use for odoo < 9.0
         return this.sendRequest("/web/database/get_list", {});
     }
 
-    searchRead(model: string, domain: any, fields: any) {
+    public searchRead(model: string, domain: any, fields: any) {
         let params = {
             model: model,
             domain: domain,
@@ -202,7 +202,7 @@ export class OdooRPCService {
         return this.sendRequest("/web/dataset/search_read", params);
     }
 
-    call(model: string, method: string, args: any, kwargs: any) {
+    public call(model: string, method: string, args: any, kwargs: any) {
 
         kwargs = kwargs || {};
         kwargs.context = kwargs.context || {};
