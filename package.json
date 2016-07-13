@@ -1,0 +1,39 @@
+{
+  "name": "angular2-odoo-jsonrpc",
+  "version": "0.0.1",
+  "description": "Odoo JsonRPC Service for angular 2",
+  "main": "odoorpc.service.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/astronaut1712/angular2-odoo-jsonrpc.git"
+  },
+  "keywords": [
+    "odoo",
+    "angular",
+    "2",
+    "jsonrpc",
+    "angular2"
+  ],
+  "author": "Quang <quang.astronaut@gmail.com>",
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/astronaut1712/angular2-odoo-jsonrpc/issues"
+  },
+  "homepage": "https://github.com/astronaut1712/angular2-odoo-jsonrpc#readme",
+  "dependencies": {
+    "@angular/common": "^2.0.0-rc.3",
+    "@angular/compiler": "^2.0.0-rc.3",
+    "@angular/core": "^2.0.0-rc.3",
+    "@angular/http": "^2.0.0-rc.3",
+    "@angular/platform-browser": "^2.0.0-rc.3",
+    "rxjs": "^5.0.0-beta.6",
+    "zone.js": "^0.6.12"
+  },
+  "devDependencies": {
+    "tslint": "^3.13.0",
+    "typescript": "^1.8.10"
+  }
+}

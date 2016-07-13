@@ -5,7 +5,7 @@ import "rxjs/add/operator/toPromise";
 
 class Cookies { // cookies doesn't work with Android default browser / Ionic
 
-    private session_id = null;
+    private session_id: string = null;
 
     delete_sessionId() {
         this.session_id = null;
@@ -14,13 +14,13 @@ class Cookies { // cookies doesn't work with Android default browser / Ionic
 
     get_sessionId() {
         return document
-                .cookie.split('; ')
-                .filter(x => { return x.indexOf('session_id') === 0; })
-                .map(x => { return x.split('=')[1]; })
+                .cookie.split("; ")
+                .filter(x => { return x.indexOf("session_id") === 0; })
+                .map(x => { return x.split("=")[1]; })
                 .pop() || this.session_id || "";
     }
 
-    set_sessionId(val) {
+    set_sessionId(val: string) {
         document.cookie = `session_id=${val}`;
         this.session_id = val;
     }
@@ -32,16 +32,16 @@ export class OdooRPCService {
     private http_auth: string;
     private cookies: Cookies;
     private uniq_id_counter: number = 0;
-    private shouldManageSessionId: boolean = false; //try without first
+    private shouldManageSessionId: boolean = false; // try without first
     private context: Object = {"lang": "en_US"};
     private headers: Headers;
 
     constructor(
-        private http: Http){
+        private http: Http) {
         this.cookies = new Cookies();
     }
 
-    private buildRequest(url:string, params:any) {
+    private buildRequest(url: string, params: any) {
         this.uniq_id_counter += 1;
         if (this.shouldManageSessionId) {
             params.session_id = this.cookies.get_sessionId();
@@ -50,7 +50,7 @@ export class OdooRPCService {
         let json_data = {
             jsonrpc: "2.0",
             method: "call",
-            params: params, //payload
+            params: params, // payload
         };
         this.headers = new Headers({
             "Content-Type": "application/json",
@@ -60,11 +60,11 @@ export class OdooRPCService {
         return JSON.stringify({
             jsonrpc: "2.0",
             method: "call",
-            params: params, //payload
+            params: params, // payload
         });
     }
 
-    private handleOdooErrors(response:any) {
+    private handleOdooErrors(response: any) {
         response = response.json();
         if (!response.error) {
             console.log(response.result);
@@ -74,17 +74,17 @@ export class OdooRPCService {
         let error = response.error;
         let errorObj = {
             title: "    ",
-            message:"",
+            message: "",
             fullTrace: error
         };
 
         if (error.code === 200 && error.message === "Odoo Server Error" && error.data.name === "werkzeug.exceptions.NotFound") {
             errorObj.title = "page_not_found";
             errorObj.message = "HTTP Error";
-        } else if ( (error.code === 100 && error.message === "Odoo Session Expired") || //v8
-                    (error.code === 300 && error.message === "OpenERP WebClient Error" && error.data.debug.match("SessionExpiredException")) //v7
+        } else if ( (error.code === 100 && error.message === "Odoo Session Expired") || // v8
+                    (error.code === 300 && error.message === "OpenERP WebClient Error" && error.data.debug.match("SessionExpiredException")) // v7
                 ) {
-                    errorObj.title ="session_expired";
+                    errorObj.title = "session_expired";
                     this.cookies.delete_sessionId();
         } else if ( (error.message === "Odoo Server Error" && /FATAL:  database "(.+)" does not exist/.test(error.data.message))) {
             errorObj.title = "database_not_found";
@@ -112,24 +112,24 @@ export class OdooRPCService {
     }
 
     private handleHttpErrors(error: any) {
-        console.error('An error occurred', error);
+        console.error("An error occurred", error);
         return Promise.reject(error.message || error);
     }
 
-    init(configs) {
+    init(configs: any) {
         this.odoo_server = configs.odoo_server;
         this.http_auth = configs.http_auth || null;
     }
 
-    setOdooServer(odoo_server:string) {
+    setOdooServer(odoo_server: string) {
         this.odoo_server = odoo_server;
     }
 
-    setHttpAuth(http_auth:string) {
+    setHttpAuth(http_auth: string) {
         this.http_auth = http_auth;
     }
 
-    sendRequest(url:string, params:Object): Promise<any> {
+    sendRequest(url: string, params: Object): Promise<any> {
         let options = this.buildRequest(url, params);
         return this.http.post(this.odoo_server + url, options, {headers: this.headers})
             .toPromise()
@@ -138,26 +138,26 @@ export class OdooRPCService {
     }
 
     getServerInfo() {
-        return this.sendRequest('/web/webclient/version_info', {});
+        return this.sendRequest("/web/webclient/version_info", {});
     }
 
     getSessionInfo() {
-        return this.sendRequest('/web/session/get_session_info', {});
+        return this.sendRequest("/web/session/get_session_info", {});
     }
 
-    login(db:string, login:string, password:string) {
+    login(db: string, login: string, password: string) {
         let params = {
                 db : db,
                 login : login,
                 password : password
             };
         let $this = this;
-        return this.sendRequest("/web/session/authenticate", params).then(function(result) {
+        return this.sendRequest("/web/session/authenticate", params).then(function(result: any) {
             if (!result.uid) {
                 $this.cookies.delete_sessionId();
                 return Promise.reject({
                     title: "wrong_login",
-                    message:"Username and password don't match",
+                    message: "Username and password don't match",
                     fullTrace: result
                 });
             }
@@ -168,10 +168,10 @@ export class OdooRPCService {
     }
 
     isLoggedIn(force: boolean = true) {
-        if (!force){
+        if (!force) {
             return Promise.resolve(this.cookies.get_sessionId().length > 0);
         }
-        return this.getSessionInfo().then((result) => {
+        return this.getSessionInfo().then((result: any) => {
             this.cookies.set_sessionId(result.session_id);
             return !!(result.uid);
         });
@@ -179,30 +179,30 @@ export class OdooRPCService {
 
     logout(force: boolean = true) {
         this.cookies.delete_sessionId();
-        if (force){
-            return this.getSessionInfo().then((r) => { //get db from sessionInfo
+        if (force) {
+            return this.getSessionInfo().then((r: any) => { // get db from sessionInfo
                 if (r.db)
-                    return this.login(r.db, '', '');
+                    return this.login(r.db, "", "");
             });
         }else {
             return Promise.resolve();
         }
     }
 
-    getDbList() { //only use for odoo < 9.0
-        return this.sendRequest('/web/database/get_list', {});
+    getDbList() { // only use for odoo < 9.0
+        return this.sendRequest("/web/database/get_list", {});
     }
 
-    searchRead(model, domain, fields) {
+    searchRead(model: string, domain: any, fields: any) {
         let params = {
             model: model,
             domain: domain,
             fields: fields
-        }
-        return this.sendRequest('/web/dataset/search_read', params);
+        };
+        return this.sendRequest("/web/dataset/search_read", params);
     }
 
-    call(model, method, args, kwargs) {
+    call(model: string, method: string, args: any, kwargs: any) {
 
         kwargs = kwargs || {};
         kwargs.context = kwargs.context || {};
@@ -214,7 +214,6 @@ export class OdooRPCService {
             args: args,
             kwargs: kwargs,
         };
-        return this.sendRequest('/web/dataset/call_kw', params);
+        return this.sendRequest("/web/dataset/call_kw", params);
     }
-
 }
