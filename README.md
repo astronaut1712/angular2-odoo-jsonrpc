@@ -42,7 +42,7 @@ export class OdooClientExampleComponent {
             odoo_server: "https://odoo-server-example",
             http_auth: "username:password" // optional
         });
-        this.odoo.RPC.login('db_example', 'username', 'password').then(res => {
+        this.odooRPC.login('db_example', 'username', 'password').then(res => {
             console.log('login success');
         }).catch( err => {
             console.error('login failed', err);
