@@ -1,4 +1,4 @@
-import { Injectable } from "@angular/core";
+import { Injectable, Inject } from "@angular/core";
 import { Http, Response, Headers } from "@angular/http";
 
 import "rxjs/add/operator/toPromise";
@@ -37,7 +37,7 @@ export class OdooRPCService {
     private headers: Headers;
 
     constructor(
-        private http: Http) {
+        @Inject(Http) private http: Http) {
         this.cookies = new Cookies();
     }
 
