@@ -19,7 +19,7 @@ Import `OdooRPCService` into component
 
 ```typescript
 import { Component } from '@angular/core';
-import { OdooRPCService } from './odoorpc.service';
+import { OdooRPCService } from 'angular2-odoo-jsonrpc';
 ```
 
 Add provider in app component
