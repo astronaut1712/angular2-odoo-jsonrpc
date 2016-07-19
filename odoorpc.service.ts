@@ -67,7 +67,6 @@ export class OdooRPCService {
     private handleOdooErrors(response: any) {
         response = response.json();
         if (!response.error) {
-            console.log(response.result);
             return response.result;
         }
 
@@ -107,12 +106,10 @@ export class OdooRPCService {
                 errorObj.message = error.data.debug.replace(/\n/g, "<br />");
             }
         }
-        console.log(errorObj);
         return Promise.reject(errorObj);
     }
 
     private handleHttpErrors(error: any) {
-        console.error("An error occurred", error);
         return Promise.reject(error.message || error);
     }
 

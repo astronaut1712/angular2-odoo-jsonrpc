@@ -1,0 +1,8 @@
+{
+  "resolution": "main",
+  "tree": {
+    "src": "https://raw.githubusercontent.com/DefinitelyTyped/DefinitelyTyped/9027703c0bd831319dcdf7f3169f7a468537f448/zone.js/zone.js.d.ts",
+    "raw": "github:DefinitelyTyped/DefinitelyTyped/zone.js/zone.js.d.ts#9027703c0bd831319dcdf7f3169f7a468537f448",
+    "typings": "https://raw.githubusercontent.com/DefinitelyTyped/DefinitelyTyped/9027703c0bd831319dcdf7f3169f7a468537f448/zone.js/zone.js.d.ts"
+  }
+}

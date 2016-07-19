@@ -64,7 +64,6 @@ var OdooRPCService = (function () {
     OdooRPCService.prototype.handleOdooErrors = function (response) {
         response = response.json();
         if (!response.error) {
-            console.log(response.result);
             return response.result;
         }
         var error = response.error;
@@ -106,11 +105,9 @@ var OdooRPCService = (function () {
                 errorObj.message = error.data.debug.replace(/\n/g, "<br />");
             }
         }
-        console.log(errorObj);
         return Promise.reject(errorObj);
     };
     OdooRPCService.prototype.handleHttpErrors = function (error) {
-        console.error("An error occurred", error);
         return Promise.reject(error.message || error);
     };
     OdooRPCService.prototype.init = function (configs) {
