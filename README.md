@@ -4,6 +4,10 @@ OdooRPC for angular2
 Migrate from [https://github.com/akretion/angular-odoo/blob/master/src/components/odoo/jsonRpc-service.js](https://github.com/akretion/angular-odoo/blob/master/src/components/odoo/jsonRpc-service.js)
 + Support Basic Authentication
 
+## Installation
+
+`npm install --save angular2-odoo-jsonrpc`
+
 ## Functions list
 
 - `login(db, user, pass)`
