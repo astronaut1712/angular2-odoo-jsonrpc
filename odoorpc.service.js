@@ -37,7 +37,7 @@ var OdooRPCService = (function () {
         this.http = http;
         this.uniq_id_counter = 0;
         this.shouldManageSessionId = false; // try without first
-        this.context = { "lang": "en_US" };
+        this.context = JSON.parse(localStorage.getItem("user_context")) || { "lang": "en_US" };
         this.cookies = new Cookies();
     }
     OdooRPCService.prototype.buildRequest = function (url, params) {
@@ -150,6 +150,7 @@ var OdooRPCService = (function () {
                 });
             }
             $this.context = result.user_context;
+            localStorage.setItem("user_context", JSON.stringify($this.context));
             $this.cookies.set_sessionId(result.session_id);
             return result;
         });
@@ -186,9 +187,14 @@ var OdooRPCService = (function () {
         var params = {
             model: model,
             domain: domain,
-            fields: fields
+            fields: fields,
+            context: this.context
         };
         return this.sendRequest("/web/dataset/search_read", params);
+    };
+    OdooRPCService.prototype.updateContext = function (context) {
+        this.context = context;
+        localStorage.setItem("user_context", JSON.stringify(context));
     };
     OdooRPCService.prototype.call = function (model, method, args, kwargs) {
         kwargs = kwargs || {};

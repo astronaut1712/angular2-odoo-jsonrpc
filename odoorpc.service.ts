@@ -33,7 +33,7 @@ export class OdooRPCService {
     private cookies: Cookies;
     private uniq_id_counter: number = 0;
     private shouldManageSessionId: boolean = false; // try without first
-    private context: Object = {"lang": "en_US"};
+    private context: Object = JSON.parse(localStorage.getItem("user_context")) || {"lang": "en_US"};
     private headers: Headers;
 
     constructor(
@@ -159,6 +159,7 @@ export class OdooRPCService {
                 });
             }
             $this.context = result.user_context;
+            localStorage.setItem("user_context", JSON.stringify($this.context));
             $this.cookies.set_sessionId(result.session_id);
             return result;
         });
@@ -194,9 +195,15 @@ export class OdooRPCService {
         let params = {
             model: model,
             domain: domain,
-            fields: fields
+            fields: fields,
+            context: this.context
         };
         return this.sendRequest("/web/dataset/search_read", params);
+    }
+
+    public updateContext(context: any) {
+        this.context = context;
+        localStorage.setItem("user_context", JSON.stringify(context));
     }
 
     public call(model: string, method: string, args: any, kwargs: any) {
