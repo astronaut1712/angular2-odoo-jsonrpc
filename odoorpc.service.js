@@ -193,8 +193,15 @@ var OdooRPCService = (function () {
         return this.sendRequest("/web/dataset/search_read", params);
     };
     OdooRPCService.prototype.updateContext = function (context) {
-        this.context = context;
+        var _this = this;
         localStorage.setItem("user_context", JSON.stringify(context));
+        var args = [[this.context.uid], context];
+        this.call("res.users", "write", args, {})
+            .then(function () { return _this.context = context; })
+            .catch(function (err) { return _this.context = context; });
+    };
+    OdooRPCService.prototype.getContext = function () {
+        return this.context;
     };
     OdooRPCService.prototype.call = function (model, method, args, kwargs) {
         kwargs = kwargs || {};

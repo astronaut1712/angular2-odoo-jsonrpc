@@ -202,8 +202,15 @@ export class OdooRPCService {
     }
 
     public updateContext(context: any) {
-        this.context = context;
         localStorage.setItem("user_context", JSON.stringify(context));
+        let args = [[(<any>this.context).uid], context];
+        this.call("res.users", "write", args, {})
+            .then(()=>this.context = context)
+            .catch((err: any) => this.context = context);
+    }
+
+    public getContext() {
+        return this.context;
     }
 
     public call(model: string, method: string, args: any, kwargs: any) {
