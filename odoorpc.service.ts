@@ -191,11 +191,12 @@ export class OdooRPCService {
         return this.sendRequest("/web/database/get_list", {});
     }
 
-    public searchRead(model: string, domain: any, fields: any) {
+    public searchRead(model: string, domain: any, fields: any, limit: number) {
         let params = {
             model: model,
             domain: domain,
             fields: fields,
+            limit: limit,
             context: this.context
         };
         return this.sendRequest("/web/dataset/search_read", params);
