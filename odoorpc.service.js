@@ -183,11 +183,12 @@ var OdooRPCService = (function () {
     OdooRPCService.prototype.getDbList = function () {
         return this.sendRequest("/web/database/get_list", {});
     };
-    OdooRPCService.prototype.searchRead = function (model, domain, fields) {
+    OdooRPCService.prototype.searchRead = function (model, domain, fields, limit) {
         var params = {
             model: model,
             domain: domain,
             fields: fields,
+            limit: limit,
             context: this.context
         };
         return this.sendRequest("/web/dataset/search_read", params);
