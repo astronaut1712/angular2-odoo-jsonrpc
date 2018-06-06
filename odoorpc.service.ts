@@ -228,4 +228,13 @@ export class OdooRPCService {
         };
         return this.sendRequest("/web/dataset/call_kw", params);
     }
+
+    public call_workflow(model: string, method: string, id: any) {
+        let params = {
+            model: model,
+            id: parseInt(id),
+            signal: method,
+        };
+        return this.sendRequest("/web/dataset/exec_workflow", params);
+    }
 }

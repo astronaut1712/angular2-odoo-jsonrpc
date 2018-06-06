@@ -216,6 +216,14 @@ var OdooRPCService = (function () {
         };
         return this.sendRequest("/web/dataset/call_kw", params);
     };
+    OdooRPCService.prototype.call_workflow = function (model, method, id ) {
+        var params = {
+            model: model,
+            id: parseInt(id),
+            signal: method,
+        };
+        return this.sendRequest("/web/dataset/exec_workflow", params);
+    };
     OdooRPCService = __decorate([
         core_1.Injectable(),
         __param(0, core_1.Inject(http_1.Http))
